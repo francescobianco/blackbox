@@ -12,6 +12,7 @@ install-script:
 	@USER=$(USER) envsubst < smb.conf > /etc/samba/smb.conf
 	@mkdir -p /media/$(USER)/Blackbox
 	@chmod 777 -R /media/$(USER)/Blackbox
+	@chown $(USER):$(USER) -R /media/$(USER)/Blackbox
 
 install: dependencies install-script restart
 	@echo Blackbox is ready.

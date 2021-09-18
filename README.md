@@ -2,8 +2,12 @@
 
 ## Installation
 
-```
+```shell
 curl -s binst.tk | bash -s francescobianco/blackbox
+```
+
+```shell
+ln -s /home/samsepiol/Downloads /media/samsepiol/Blackbox/Downloads
 ```
 
 ## Read more
