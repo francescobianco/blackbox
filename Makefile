@@ -14,3 +14,4 @@ install-script:
 	@chmod 777 -R /media/$(USER)/Blackbox
 
 install: dependencies install-script restart
+	@echo Blackbox is ready.
