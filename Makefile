@@ -2,7 +2,7 @@
 USER := $(shell logname)
 
 dependencies:
-	@apt install -y samba gettext
+	@apt-get install -y samba gettext
 
 restart:
 	@service smbd restart
