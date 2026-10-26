@@ -1,0 +1,13 @@
+[Unit]
+Description=Blackbox WebDAV for %i (rclone)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=%i
+EnvironmentFile=/etc/blackbox/users/%i/env
+ExecStart=/usr/bin/rclone serve webdav ${BLACKBOX_DIR} --addr :${BLACKBOX_WEBDAV_PORT} --htpasswd /etc/blackbox/users/%i/htpasswd --cert /etc/blackbox/users/%i/tls.crt --key /etc/blackbox/users/%i/tls.key
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

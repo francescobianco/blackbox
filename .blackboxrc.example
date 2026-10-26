@@ -1,0 +1,17 @@
+# Blackbox configuration (~/.blackboxrc)
+# Shell syntax: $USER and $HOME refer to the Linux user that owns this file.
+# Contains credentials: keep it readable only by you (chmod 600, done by make).
+# After editing, apply with: sudo make -C /opt/blackbox configure
+
+# Folder shared via WebDAV and Samba
+BLACKBOX_DIR=$HOME/Blackbox
+
+# Credentials to access the Blackbox resource
+BLACKBOX_USER=$USER
+BLACKBOX_PASSWORD=
+
+# Samba share name (unique among users)
+BLACKBOX_SHARE=$USER
+
+# WebDAV port (HTTPS, unique among users), to forward on the router from the public IP
+BLACKBOX_WEBDAV_PORT=6661
