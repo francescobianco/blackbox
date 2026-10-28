@@ -12,7 +12,7 @@ activity = {}  # disk -> (diskstats io counters, time they last changed)
 def users():
     for env in sorted(glob.glob('/etc/blackbox/users/*/env')):
         conf = dict(re.findall(r'^(\w+)="?(.*?)"?$', open(env).read(), re.M))
-        share = open(os.path.dirname(env) + '/share.conf').readline().strip().strip('[]')
+        share = re.search(r'^\[(.+)\]$', open(os.path.dirname(env) + '/share.conf').read(), re.M).group(1)
         yield os.path.basename(os.path.dirname(env)), share, conf.get('BLACKBOX_DIR', '')
 
 
