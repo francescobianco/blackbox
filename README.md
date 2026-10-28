@@ -4,6 +4,7 @@ Share folders of a Linux host over the internet, without VPN.
 
 - **WebDAV** over HTTPS (`rclone serve webdav`), reachable from the public IP.
 - **Samba** on the LAN, SMB3 with encryption.
+- **Status panel** on port `6680` (read-only): disk standby state in real time and space used by each Blackbox.
 
 Sources are installed once in `/opt/blackbox`. Every user of the host has their own configuration in `~/.blackboxrc`, their own WebDAV instance (`blackbox-webdav@<user>`) and their own Samba share, with the same credentials. No anonymous access.
 
@@ -46,6 +47,7 @@ Generated files live in `/etc/blackbox/users/<user>/`.
 
 - WebDAV: `davs://<user>@<public-ip>:<port>/` (the certificate is self-signed: accept it on first connection)
 - Samba (LAN): `smb://<host>/<share>`
+- Status (LAN): `http://<host>:6680/`, read-only, no login: do not forward it on the router
 
 ## Read more
 

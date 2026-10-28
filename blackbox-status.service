@@ -1,0 +1,15 @@
+[Unit]
+Description=Blackbox status panel (read-only)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/blackbox/blackbox-status.py
+Restart=on-failure
+ProtectSystem=strict
+ProtectHome=read-only
+NoNewPrivileges=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

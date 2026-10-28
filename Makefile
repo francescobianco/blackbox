@@ -10,11 +10,13 @@ VARS := $$USER $$BLACKBOX_DIR $$BLACKBOX_SHARE
 
 # System-wide, once per host
 install:
-	@apt-get install -y samba gettext rclone apache2-utils openssl
+	@apt-get install -y samba gettext rclone apache2-utils openssl hdparm python3
 	@if [ -f /etc/samba/smb.conf ] && [ ! -f /etc/samba/smb_0.conf ]; then mv /etc/samba/smb.conf /etc/samba/smb_0.conf; fi
 	@mkdir -p /etc/blackbox/users
-	@cp $(SRC)blackbox-webdav@.service /etc/systemd/system/
+	@cp $(SRC)blackbox-webdav@.service $(SRC)blackbox-status.service /etc/systemd/system/
 	@systemctl daemon-reload
+	@systemctl enable blackbox-status
+	@systemctl restart blackbox-status
 	@$(MAKE) -f $(SRC)Makefile samba
 	@echo Blackbox is installed. Each user runs: sudo make -C $(SRC) configure
 
