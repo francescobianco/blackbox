@@ -27,6 +27,18 @@ The first run creates `~/.blackboxrc` and stops asking for `BLACKBOX_PASSWORD`. 
 
 On the router, forward TCP `BLACKBOX_WEBDAV_PORT` of each user from the public IP to the Blackbox host.
 
+## Let's Encrypt
+
+Clients that reject self-signed certificates (e.g. FRITZ!Box online storage) need a trusted one:
+
+1. Point a DNS `A` record of your domain (e.g. `blackbox.example.com`) to the public IP.
+2. On the router, forward TCP 80 to the Blackbox host (used only by `certbot` to validate the domain; nothing else may listen on port 80).
+3. Set `BLACKBOX_DOMAIN` (and optionally `BLACKBOX_EMAIL`) in `~/.blackboxrc` and run `sudo make -C /opt/blackbox configure`.
+
+If port 80 cannot be forwarded, validate via DNS instead: create a subdomain on [DuckDNS](https://www.duckdns.org), add the record `_acme-challenge.<domain> CNAME <subdomain>.duckdns.org` to your domain, and set `BLACKBOX_DUCKDNS_DOMAIN` and `BLACKBOX_DUCKDNS_TOKEN`.
+
+The certificate is renewed by the `certbot` timer, which copies it to `/etc/blackbox/users/<user>/` and restarts the WebDAV service.
+
 ## Configuration
 
 `~/.blackboxrc` (created from [`.blackboxrc.example`](.blackboxrc.example), `chmod 600` since it holds credentials):
@@ -38,6 +50,10 @@ On the router, forward TCP `BLACKBOX_WEBDAV_PORT` of each user from the public I
 | `BLACKBOX_PASSWORD` | *(required)* | Password |
 | `BLACKBOX_SHARE` | `$USER` | Samba share name, unique among users |
 | `BLACKBOX_WEBDAV_PORT` | `6661` | WebDAV HTTPS port, unique among users |
+| `BLACKBOX_DOMAIN` | *(empty)* | Public domain for a Let's Encrypt certificate; empty means self-signed |
+| `BLACKBOX_EMAIL` | *(empty)* | Email for Let's Encrypt expiry notices |
+| `BLACKBOX_DUCKDNS_DOMAIN` | *(empty)* | DuckDNS subdomain for DNS validation, when port 80 cannot be forwarded |
+| `BLACKBOX_DUCKDNS_TOKEN` | *(empty)* | DuckDNS token |
 
 After editing it, apply with `sudo make -C /opt/blackbox configure`. To remove your Blackbox (keeps `~/.blackboxrc` and the folder): `sudo make -C /opt/blackbox unconfigure`.
 
@@ -45,7 +61,7 @@ Generated files live in `/etc/blackbox/users/<user>/`.
 
 ## Connecting
 
-- WebDAV: `davs://<user>@<public-ip>:<port>/` (the certificate is self-signed: accept it on first connection)
+- WebDAV: `davs://<user>@<domain>:<port>/` (without `BLACKBOX_DOMAIN`, use the public IP and accept the self-signed certificate on first connection)
 - Samba (LAN): `smb://<host>/<share>`
 - Status (LAN): `http://<host>:6680/`, read-only, no login: do not forward it on the router
 

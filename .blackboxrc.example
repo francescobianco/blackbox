@@ -15,3 +15,16 @@ BLACKBOX_SHARE=$USER
 
 # WebDAV port (HTTPS, unique among users), to forward on the router from the public IP
 BLACKBOX_WEBDAV_PORT=6661
+
+# Public domain pointing to the router's public IP (optional).
+# If set, the certificate comes from Let's Encrypt (renewed automatically):
+# forward TCP 80 on the router to this host. If empty, a self-signed one is used.
+BLACKBOX_DOMAIN=
+
+# Email for Let's Encrypt expiry notices (optional)
+BLACKBOX_EMAIL=
+
+# If port 80 cannot be forwarded: validate via DNS instead, through DuckDNS (optional).
+# Create a DuckDNS subdomain and add the DNS record: _acme-challenge.<BLACKBOX_DOMAIN> CNAME <subdomain>.duckdns.org
+BLACKBOX_DUCKDNS_DOMAIN=
+BLACKBOX_DUCKDNS_TOKEN=
